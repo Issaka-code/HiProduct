@@ -10,7 +10,7 @@ export default function TrendsPage() {
   const [selectedTrend, setSelectedTrend] = useState<AdData | null>(null);
 
   useEffect(() => {
-    async function fetchTrends() {
+    const fetchTrends = async () => {
       if (!supabase) return;
       const { data } = await supabase
         .from('ads')
@@ -21,7 +21,7 @@ export default function TrendsPage() {
       if (data) {
         setTrends(data);
       }
-    }
+    };
     fetchTrends();
   }, []);
 

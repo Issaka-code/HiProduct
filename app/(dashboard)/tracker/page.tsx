@@ -27,7 +27,7 @@ function BrandTrackerContent() {
 
   // Load from Supabase on mount
   useEffect(() => {
-    async function fetchBrands() {
+    const fetchBrands = async () => {
       if (!supabase) return;
       const { data: { user } } = await supabase.auth.getUser();
       if (!user) return;
@@ -41,7 +41,7 @@ function BrandTrackerContent() {
         setBrands(data);
       }
       setIsLoaded(true);
-    }
+    };
     fetchBrands();
   }, []);
 
@@ -51,7 +51,7 @@ function BrandTrackerContent() {
 
     const brandToAdd = searchParams.get("add");
     if (brandToAdd) {
-      async function addBrand() {
+      const addBrand = async () => {
         const { data: { user } } = await supabase.auth.getUser();
         if (!user) return;
 
@@ -65,7 +65,7 @@ function BrandTrackerContent() {
           category: "Nouvelle Marque",
           active_ads: Math.floor(Math.random() * 50) + 10,
           growth: "+0%",
-          trend: "up",
+          trend: "up" as const,
           status: "Active"
         };
 
@@ -79,7 +79,7 @@ function BrandTrackerContent() {
           setBrands(prev => [data, ...prev]);
           addToast(`${brandToAdd} ajouté au tracker`, "success");
         }
-      }
+      };
       addBrand();
     }
   }, [searchParams, isLoaded, brands, addToast]);

@@ -24,12 +24,12 @@ export default function SourcingPage() {
   const addToast = useToastStore((state) => state.addToast);
 
   useEffect(() => {
-    async function fetchSuppliers() {
+    const fetchSuppliers = async () => {
       if (!supabase) return;
       const { data } = await supabase.from('suppliers').select('*').order('rating', { ascending: false });
       if (data) setSuppliers(data);
       setLoading(false);
-    }
+    };
     fetchSuppliers();
   }, []);
 

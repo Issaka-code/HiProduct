@@ -27,7 +27,7 @@ export function Header() {
 
   // Load profile from Supabase
   useEffect(() => {
-    async function getProfile() {
+    const getProfile = async () => {
       if (!supabase) return;
 
       const { data: { user } } = await supabase.auth.getUser();
@@ -70,7 +70,7 @@ export function Header() {
           }
         )
         .subscribe();
-    }
+    };
 
     getProfile();
 

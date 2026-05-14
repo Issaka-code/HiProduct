@@ -27,7 +27,7 @@ export function Sidebar() {
   const channelRef = useRef<RealtimeChannel | null>(null);
 
   useEffect(() => {
-    async function getCredits() {
+    const getCredits = async () => {
       if (!supabase) return;
       const { data: { user } } = await supabase.auth.getUser();
       if (!user) return;
@@ -62,8 +62,7 @@ export function Sidebar() {
             }
           }
         )
-        .subscribe();
-    }
+    };
     
     getCredits();
 
