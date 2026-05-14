@@ -1,0 +1,176 @@
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  /* ══ NEW "FUTURE-TECH" THEME (default Dark) ══ */
+  :root {
+    --background: 230 35% 5%;
+    --foreground: 210 40% 98%;
+
+    --card: 230 30% 9%;
+    --card-foreground: 210 40% 98%;
+
+    --popover: 230 30% 9%;
+    --popover-foreground: 210 40% 98%;
+
+    --primary: 260 90% 65%;
+    --primary-foreground: 210 40% 98%;
+
+    --secondary: 230 25% 12%;
+    --secondary-foreground: 210 40% 98%;
+
+    --muted: 230 20% 12%;
+    --muted-foreground: 215 20% 65%;
+
+    --accent: 260 100% 70%;
+    --accent-foreground: 210 40% 98%;
+
+    --destructive: 0 84% 60%;
+    --destructive-foreground: 210 40% 98%;
+
+    --border: 230 20% 15%;
+    --input: 230 20% 15%;
+    --ring: 260 90% 65%;
+
+    --radius: 1.25rem;
+
+    --gradient-brand: linear-gradient(135deg, #7c3aed, #db2777);
+    --glow: rgba(124, 58, 237, 0.4);
+    
+    /* Dynamic BG blobs */
+    --blob-1: rgba(124, 58, 237, 0.12);
+    --blob-2: rgba(219, 39, 119, 0.08);
+  }
+
+  .light {
+    --background: 220 30% 97%;
+    --foreground: 230 40% 12%;
+
+    --card: 0 0% 100%;
+    --card-foreground: 230 40% 12%;
+
+    --popover: 0 0% 100%;
+    --popover-foreground: 230 40% 12%;
+
+    --primary: 260 90% 60%;
+    --primary-foreground: 0 0% 100%;
+
+    --secondary: 220 20% 93%;
+    --secondary-foreground: 230 40% 20%;
+
+    --muted: 220 15% 94%;
+    --muted-foreground: 215 16% 47%;
+
+    --accent: 260 80% 60%;
+    --accent-foreground: 0 0% 100%;
+
+    --border: 220 13% 88%;
+    --input: 220 13% 90%;
+    --ring: 260 90% 60%;
+    
+    --blob-1: rgba(124, 58, 237, 0.06);
+    --blob-2: rgba(219, 39, 119, 0.04);
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  html {
+    font-family: 'Plus Jakarta Sans', 'Outfit', system-ui, sans-serif;
+  }
+  body {
+    @apply bg-background text-foreground antialiased selection:bg-primary/30;
+    position: relative;
+    overflow-x: hidden;
+  }
+  
+  /* Animated Tech Background */
+  body::before {
+    content: "";
+    position: fixed;
+    top: 0; left: 0; width: 100%; height: 100%;
+    background-image: 
+      radial-gradient(circle at 20% 20%, var(--blob-1) 0%, transparent 40%),
+      radial-gradient(circle at 80% 80%, var(--blob-2) 0%, transparent 40%),
+      url("https://grainy-gradients.vercel.app/noise.svg");
+    filter: contrast(120%) brightness(110%);
+    opacity: 0.5;
+    z-index: -1;
+    pointer-events: none;
+  }
+}
+
+/* ── Modern UI Components ── */
+.glass-panel {
+  background: rgba(255, 255, 255, 0.03);
+  backdrop-filter: blur(20px) saturate(180%);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+}
+
+.light .glass-panel {
+  background: rgba(255, 255, 255, 0.7);
+  backdrop-filter: blur(20px);
+  border: 1px solid rgba(0, 0, 0, 0.05);
+  box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.07);
+}
+
+.neo-card {
+  @apply rounded-3xl p-6 transition-all duration-500;
+  background: linear-gradient(145deg, hsl(var(--card)), hsl(var(--secondary) / 0.5));
+  border: 1px solid hsl(var(--border) / 0.5);
+}
+
+.neo-card:hover {
+  @apply -translate-y-2;
+  box-shadow: 0 20px 40px -20px var(--glow);
+  border-color: hsl(var(--primary) / 0.3);
+}
+
+.gradient-text-new {
+  background: var(--gradient-brand);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  font-weight: 800;
+}
+
+/* ── Smooth Animations ── */
+@keyframes float {
+  0% { transform: translateY(0px); }
+  50% { transform: translateY(-10px); }
+  100% { transform: translateY(0px); }
+}
+
+.animate-float {
+  animation: float 6s ease-in-out infinite;
+}
+
+@keyframes bounce-slow {
+  0%, 100% { transform: translateY(-5%); animation-timing-function: cubic-bezier(0.8, 0, 1, 1); }
+  50% { transform: translateY(0); animation-timing-function: cubic-bezier(0, 0, 0.2, 1); }
+}
+
+.animate-bounce-slow {
+  animation: bounce-slow 3s infinite;
+}
+
+@keyframes shine {
+  0% { left: -100%; }
+  100% { left: 200%; }
+}
+
+/* ── Scrollbar ── */
+::-webkit-scrollbar { width: 8px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { 
+  background: hsl(var(--border)); 
+  border-radius: 20px; 
+  border: 2px solid hsl(var(--background));
+}
+::-webkit-scrollbar-thumb:hover { background: hsl(var(--primary) / 0.5); }
