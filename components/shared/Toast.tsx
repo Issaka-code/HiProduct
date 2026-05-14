@@ -1,5 +1,5 @@
 "use client";
-import { useToastStore } from "@/lib/store";
+import { useToastStore, Toast } from "@/lib/store";
 import { CheckCircle2, AlertCircle, Info, X } from "lucide-react";
 import { useEffect, useState } from "react";
 
@@ -15,7 +15,7 @@ export function ToastContainer() {
   );
 }
 
-function ToastItem({ toast, onRemove }: { toast: any, onRemove: () => void }) {
+function ToastItem({ toast, onRemove }: { toast: Toast, onRemove: () => void }) {
   const [isVisible, setIsVisible] = useState(false);
 
   useEffect(() => {

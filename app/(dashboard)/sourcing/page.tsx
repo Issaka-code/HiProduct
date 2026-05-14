@@ -1,13 +1,25 @@
 "use client";
 
-import { Search, ShoppingCart, Globe, Clock, ShieldCheck, Zap, ArrowUpRight, Filter, ChevronRight, Package, Truck, Award } from "lucide-react";
+import { Search, Globe, Clock, ShieldCheck, Zap, ArrowUpRight, Filter, ChevronRight, Award, Truck } from "lucide-react";
 import { useState, useEffect } from "react";
 import { useToastStore } from "@/lib/store";
 import { supabase } from "@/lib/supabase";
 
+interface Supplier {
+  id: string;
+  name: string;
+  logo: string;
+  type: string;
+  color: string;
+  shipping_time: string;
+  price_range: string;
+  rating: number;
+  specialty: string;
+}
+
 export default function SourcingPage() {
   const [searchQuery, setSearchQuery] = useState("");
-  const [suppliers, setSuppliers] = useState<any[]>([]);
+  const [suppliers, setSuppliers] = useState<Supplier[]>([]);
   const [loading, setLoading] = useState(true);
   const addToast = useToastStore((state) => state.addToast);
 

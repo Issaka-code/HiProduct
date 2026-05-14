@@ -1,12 +1,20 @@
 "use client";
 import { useState, useEffect } from "react";
-import { PlayCircle, Image as ImageIcon, UploadCloud, SearchX, Sparkles, Clock, History, Trash2 } from "lucide-react";
+import { PlayCircle, Image as ImageIcon, UploadCloud, SearchX, Sparkles, Clock, History } from "lucide-react";
 import { supabase } from "@/lib/supabase";
 import { useToastStore } from "@/lib/store";
+import Image from "next/image";
+
+interface CreativeSearch {
+  id: string;
+  image_url: string;
+  results_count: number;
+  created_at: string;
+}
 
 export default function CreativeFinderPage() {
   const addToast = useToastStore((state) => state.addToast);
-  const [history, setHistory] = useState<any[]>([]);
+  const [history, setHistory] = useState<CreativeSearch[]>([]);
   const [loading, setLoading] = useState(true);
   const [isUploading, setIsUploading] = useState(false);
 
@@ -136,8 +144,13 @@ export default function CreativeFinderPage() {
             ) : history.length > 0 ? (
               history.map((item) => (
                 <div key={item.id} className="flex items-center gap-4 p-3 rounded-2xl bg-white/5 border border-white/5 hover:border-primary/30 transition-all group">
-                  <div className="w-12 h-12 rounded-lg bg-slate-800 overflow-hidden border border-white/10">
-                    <img src={item.image_url} alt="Search" className="w-full h-full object-cover" />
+                  <div className="w-12 h-12 rounded-lg bg-slate-800 overflow-hidden border border-white/10 relative">
+                    <Image 
+                      src={item.image_url} 
+                      alt="Search" 
+                      fill 
+                      className="object-cover" 
+                    />
                   </div>
                   <div className="flex-1">
                     <div className="text-xs font-black text-foreground">{item.results_count} Résultats</div>
@@ -156,8 +169,11 @@ export default function CreativeFinderPage() {
             )}
           </div>
 
-          <button className="w-full mt-8 py-3 rounded-xl border border-white/5 text-[10px] font-black uppercase tracking-widest text-muted-foreground hover:bg-red-500/10 hover:text-red-500 hover:border-red-500/30 transition-all">
-            Effacer l'historique
+          <button 
+            onClick={() => addToast("Bientôt disponible !", "info")}
+            className="w-full mt-8 py-3 rounded-xl border border-white/5 text-[10px] font-black uppercase tracking-widest text-muted-foreground hover:bg-red-500/10 hover:text-red-500 hover:border-red-500/30 transition-all"
+          >
+            Effacer l&apos;historique
           </button>
         </div>
 

@@ -15,7 +15,7 @@ export default function AdsExplorerPage() {
   const [ads, setAds] = useState<AdData[]>([]);
   const [loading, setLoading] = useState(true);
 
-  const fetchAds = async (filters: any = {}) => {
+  const fetchAds = async (filters: Record<string, string | undefined> = {}) => {
     // Validation
     const validatedFilters = FilterSchema.parse(filters);
     

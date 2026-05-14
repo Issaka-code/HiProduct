@@ -1,10 +1,10 @@
 "use client";
 
 import { useState } from "react";
-import { SlidersHorizontal, ChevronDown, Search, Calendar } from "lucide-react";
+import { SlidersHorizontal, ChevronDown, Search } from "lucide-react";
 import { DateRangePicker } from "./DateRangePicker";
 
-export function FilterBar({ onFilterChange }: { onFilterChange: (filters: any) => void }) {
+export function FilterBar({ onFilterChange }: { onFilterChange: (filters: Record<string, string>) => void }) {
   const [countrySearch, setCountrySearch] = useState("");
   const [selectedFilters, setSelectedFilters] = useState<Record<string, string>>({});
 

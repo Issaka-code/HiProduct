@@ -1,20 +1,18 @@
 "use client";
 import { useState, useEffect } from "react";
-import { Flame, TrendingUp, ArrowUpRight, ShoppingCart, Eye, Heart, BarChart3, Activity } from "lucide-react";
+import { Flame, TrendingUp, ArrowUpRight, Activity } from "lucide-react";
 import { AdDetailsModal } from "@/components/ads/AdDetailsModal";
 import { AdData } from "@/components/ads/AdCard";
-import { useToastStore } from "@/lib/store";
 import { supabase } from "@/lib/supabase";
 
 export default function TrendsPage() {
   const [trends, setTrends] = useState<any[]>([]);
   const [selectedTrend, setSelectedTrend] = useState<AdData | null>(null);
-  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     async function fetchTrends() {
       if (!supabase) return;
-      const { data, error } = await supabase
+      const { data } = await supabase
         .from('ads')
         .select('*')
         .eq('is_trending', true)
@@ -23,7 +21,6 @@ export default function TrendsPage() {
       if (data) {
         setTrends(data);
       }
-      setLoading(false);
     }
     fetchTrends();
   }, []);

@@ -6,6 +6,8 @@ import { useRouter } from "next/navigation";
 import { useState, useRef, useEffect } from "react";
 import { useToastStore } from "@/lib/store";
 import { supabase } from "@/lib/supabase";
+import { RealtimeChannel } from "@supabase/supabase-js";
+import Image from "next/image";
 
 export function Header() {
   const { theme, toggleTheme } = useTheme();
@@ -21,7 +23,7 @@ export function Header() {
     plan: "Pro Plan"
   });
 
-  const channelRef = useRef<any>(null);
+  const channelRef = useRef<RealtimeChannel | null>(null);
 
   // Load profile from Supabase
   useEffect(() => {
@@ -136,7 +138,13 @@ export function Header() {
             <div className="w-12 h-12 rounded-2xl bg-gradient-to-br from-violet-500 to-pink-500 p-[2px] shadow-lg group-hover:scale-105 transition-transform duration-300 relative">
               <div className="w-full h-full rounded-[0.9rem] bg-background flex items-center justify-center overflow-hidden">
                  {profile.avatar ? (
-                   <img src={profile.avatar} alt="Profile" className="w-full h-full object-cover" />
+                   <Image 
+                     src={profile.avatar} 
+                     alt="Profile" 
+                     width={48} 
+                     height={48} 
+                     className="w-full h-full object-cover" 
+                   />
                  ) : (
                    <User className="w-6 h-6 text-muted-foreground" />
                  )}

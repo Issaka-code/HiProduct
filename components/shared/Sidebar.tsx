@@ -18,12 +18,13 @@ import {
 import { useToastStore } from "@/lib/store";
 import { useState, useEffect, useRef } from "react";
 import { supabase } from "@/lib/supabase";
+import { RealtimeChannel } from "@supabase/supabase-js";
 
 export function Sidebar() {
   const pathname = usePathname();
   const addToast = useToastStore((state) => state.addToast);
   const [credits, setCredits] = useState({ current: 500, max: 1000 });
-  const channelRef = useRef<any>(null);
+  const channelRef = useRef<RealtimeChannel | null>(null);
 
   useEffect(() => {
     async function getCredits() {
@@ -140,7 +141,7 @@ export function Sidebar() {
                 <div className="relative group/info">
                   <HelpCircle className="w-3 h-3 text-muted-foreground/50 cursor-help" />
                   <div className="absolute bottom-full left-0 mb-2 w-48 p-2 bg-secondary/95 backdrop-blur-xl border border-white/10 rounded-xl text-[10px] font-medium text-foreground opacity-0 invisible group-hover/info:opacity-100 group-hover/info:visible transition-all shadow-2xl z-[100]">
-                    1 recherche = 1 crédit. Les analyses IA avancées peuvent coûter jusqu'à 5 crédits.
+                    1 recherche = 1 crédit. Les analyses IA avancées peuvent coûter jusqu&apos;à 5 crédits.
                   </div>
                 </div>
               </div>

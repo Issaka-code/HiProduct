@@ -7,9 +7,20 @@ import { AdData } from "@/components/ads/AdCard";
 import { useToastStore } from "@/lib/store";
 import { supabase } from "@/lib/supabase";
 
+interface Brand {
+  id: string;
+  name: string;
+  category: string;
+  active_ads: number;
+  growth: string;
+  trend: 'up' | 'down';
+  status: string;
+  last_seen: string;
+}
+
 function BrandTrackerContent() {
   const searchParams = useSearchParams();
-  const [brands, setBrands] = useState<any[]>([]);
+  const [brands, setBrands] = useState<Brand[]>([]);
   const addToast = useToastStore((state) => state.addToast);
   const [isLoaded, setIsLoaded] = useState(false);
   const [selectedBrandAd, setSelectedBrandAd] = useState<AdData | null>(null);
@@ -21,7 +32,7 @@ function BrandTrackerContent() {
       const { data: { user } } = await supabase.auth.getUser();
       if (!user) return;
 
-      const { data, error } = await supabase
+      const { data } = await supabase
         .from('tracked_brands')
         .select('*')
         .order('created_at', { ascending: false });
@@ -58,7 +69,7 @@ function BrandTrackerContent() {
           status: "Active"
         };
 
-        const { data, error } = await supabase
+        const { data } = await supabase
           .from('tracked_brands')
           .insert(newBrand)
           .select()
@@ -71,9 +82,9 @@ function BrandTrackerContent() {
       }
       addBrand();
     }
-  }, [searchParams, isLoaded]);
+  }, [searchParams, isLoaded, brands, addToast]);
 
-  const handleAnalyze = (brand: any) => {
+  const handleAnalyze = (brand: Brand) => {
     setSelectedBrandAd({
       id: "brand-top-" + brand.id,
       brandName: brand.name,

@@ -1,6 +1,6 @@
 "use client";
 
-import { X, Play, Bookmark, MessageCircle, Music, ExternalLink, Share2, ArrowRight } from "lucide-react";
+import { X, Play, Bookmark, MessageCircle, Music, ExternalLink } from "lucide-react";
 import { AdData } from "./AdCard";
 import { createPortal } from "react-dom";
 import { useEffect, useState } from "react";
@@ -220,7 +220,7 @@ export function AdDetailsModal({ ad, onClose }: AdDetailsModalProps) {
 }
 
 // Quick helper for missing lucide icon in this file
-function ChevronDown(props: any) {
+function ChevronDown(props: React.SVGProps<SVGSVGElement>) {
   return (
     <svg
       {...props}
