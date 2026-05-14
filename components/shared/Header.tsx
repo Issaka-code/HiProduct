@@ -21,6 +21,8 @@ export function Header() {
     plan: "Pro Plan"
   });
 
+  const channelRef = useRef<any>(null);
+
   // Load profile from Supabase
   useEffect(() => {
     async function getProfile() {
@@ -30,7 +32,7 @@ export function Header() {
       if (!user) return;
 
       // Initial fetch
-      const { data, error } = await supabase
+      const { data } = await supabase
         .from('profiles')
         .select('*')
         .eq('id', user.id)
@@ -45,9 +47,15 @@ export function Header() {
         });
       }
 
-      // Realtime subscription
-      const channel = supabase
-        .channel('profile_changes')
+      // Cleanup previous channel if exists
+      if (channelRef.current) {
+        supabase.removeChannel(channelRef.current);
+      }
+
+      // Realtime subscription with unique name per session
+      const channelId = `profile_${user.id}_${Math.random().toString(36).substring(7)}`;
+      channelRef.current = supabase
+        .channel(channelId)
         .on('postgres_changes', 
           { event: 'UPDATE', schema: 'public', table: 'profiles', filter: `id=eq.${user.id}` }, 
           (payload) => {
@@ -60,13 +68,15 @@ export function Header() {
           }
         )
         .subscribe();
-
-      return () => {
-        supabase.removeChannel(channel);
-      };
     }
 
     getProfile();
+
+    return () => {
+      if (channelRef.current && supabase) {
+        supabase.removeChannel(channelRef.current);
+      }
+    };
   }, []);
 
   // Close menu when clicking outside

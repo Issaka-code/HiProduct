@@ -16,13 +16,14 @@ import {
   HelpCircle
 } from "lucide-react";
 import { useToastStore } from "@/lib/store";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { supabase } from "@/lib/supabase";
 
 export function Sidebar() {
   const pathname = usePathname();
   const addToast = useToastStore((state) => state.addToast);
   const [credits, setCredits] = useState({ current: 500, max: 1000 });
+  const channelRef = useRef<any>(null);
 
   useEffect(() => {
     async function getCredits() {
@@ -43,9 +44,15 @@ export function Sidebar() {
         });
       }
 
-      // Realtime credits update
-      const channel = supabase
-        .channel('credits_changes')
+      // Cleanup previous channel if exists
+      if (channelRef.current) {
+        supabase.removeChannel(channelRef.current);
+      }
+
+      // Realtime credits update with unique name
+      const channelId = `credits_${user.id}_${Math.random().toString(36).substring(7)}`;
+      channelRef.current = supabase
+        .channel(channelId)
         .on('postgres_changes', 
           { event: 'UPDATE', schema: 'public', table: 'profiles', filter: `id=eq.${user.id}` }, 
           (payload) => {
@@ -55,10 +62,15 @@ export function Sidebar() {
           }
         )
         .subscribe();
-
-      return () => { supabase.removeChannel(channel); };
     }
+    
     getCredits();
+
+    return () => {
+      if (channelRef.current && supabase) {
+        supabase.removeChannel(channelRef.current);
+      }
+    };
   }, []);
 
   const links = [
